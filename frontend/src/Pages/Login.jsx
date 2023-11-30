@@ -1,15 +1,36 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { RiLoginCircleLine } from "react-icons/ri";
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { RiH2, RiLoginCircleLine } from "react-icons/ri";
+import { useDispatch, useSelector } from 'react-redux';
+import { useLoginMutation } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
+import { toast } from 'react-toastify';
+import LoadingSpinner from '../Components/Spinner';
 
 const Login = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [login, { isLoading }] = useLoginMutation()
+    const { userInfo } = useSelector((state) => state.auth)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    useEffect(() => {
+        if (userInfo) {
+            navigate('/')
+        }
+    }, [navigate, userInfo])
+
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('submit');
-        console.log(email)
+        try {
+            const res = await login({ email, password }).unwrap()
+            dispatch(setCredentials({...res}))
+            navigate('/')
+        } catch (error) {
+            toast.error(error.data.message || error.error);
+        }
     }
 
     return (
@@ -72,6 +93,9 @@ const Login = () => {
                                     </div>
                                     <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                                 </div>
+
+                                { isLoading && <LoadingSpinner />}
+
                                 <button
                                     type="submit"
                                     className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover-bg-blue-700 dark:focus:ring-blue-800"
