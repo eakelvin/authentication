@@ -14,14 +14,35 @@ const Profile = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [phone, setPhone] = useState('')
+    const [country, setCountry] = useState('')
+    const [gender, setGender] = useState('')
+    const [dateOfBirth, setDateOfBirth] = useState('')
 
     const { userInfo } = useSelector((state) => state.auth)
     const [updateProfile, {isLoading}] = useUpdateUserMutation()
 
+    // useEffect(() => {
+    //     setName(userInfo.name)
+    //     setEmail(userInfo.email)
+    //     setPhone(userInfo.phone)
+    //     setCountry(userInfo.country)
+    //     setGender(userInfo.gender)
+    //     setDateOfBirth(userInfo.DateOfBirth)
+    // }, [userInfo.setName, userInfo.setEmail, userInfo.setPhone, userInfo.setCountry, userInfo.setGender, userInfo.setDateOfBirth])
+
     useEffect(() => {
-        setName(userInfo.name)
-        setEmail(userInfo.email)
-    }, [userInfo.setName, userInfo.setEmail])
+        console.log(userInfo);
+        if (userInfo) {
+          setName(userInfo.name);
+          setEmail(userInfo.email);
+          setPhone(userInfo.phone);
+          setCountry(userInfo.country);
+          setGender(userInfo.gender);
+          setDateOfBirth(userInfo.dateOfBirth);
+        }
+      }, [userInfo]);
+      
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -31,7 +52,7 @@ const Profile = () => {
             try {
                 const res = await updateProfile({
                     _id: userInfo._id,
-                    name, email, password
+                    name, email, password, phone, country, gender, dateOfBirth
                 }).unwrap()
                 dispatch(setCredentials({ ...res }))
                 toast.success("Profile Updated")
@@ -43,7 +64,7 @@ const Profile = () => {
 
     return (
         <div>
-            <section className="bg-gray-50 dark:bg-gray-900">
+            <section className="bg-gray-50 dark:bg-gray-900 mt-10">
                 <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                     <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
                         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -61,7 +82,6 @@ const Profile = () => {
                                         id="name"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="name"
-                                        required
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
                                     />
@@ -76,9 +96,63 @@ const Profile = () => {
                                         id="email"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         placeholder="name@company.com"
-                                        required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="gender" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Your Gender
+                                    </label>
+                                    <input
+                                        type="gender"
+                                        name="gender"
+                                        id="gender"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Gender"
+                                        value={gender}
+                                        onChange={(e) => setGender(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Your Phone Number
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="phone"
+                                        id="phone"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Phone Number"
+                                        value={phone}
+                                        onChange={(e) => setPhone(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Your Date of Birth
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="dateOfBirth"
+                                        id="dateOfBirth"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        value={dateOfBirth}
+                                        onChange={(e) => setDateOfBirth(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                        Your Country
+                                    </label>
+                                    <input
+                                        type="country"
+                                        name="country"
+                                        id="country"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Country"
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
                                     />
                                 </div>
                                 <div>

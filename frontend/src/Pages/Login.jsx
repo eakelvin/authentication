@@ -18,7 +18,7 @@ const Login = () => {
 
     useEffect(() => {
         if (userInfo) {
-            navigate('/')
+            navigate('/dashboard')
         }
     }, [navigate, userInfo])
 
@@ -27,7 +27,7 @@ const Login = () => {
         try {
             const res = await login({ email, password }).unwrap()
             dispatch(setCredentials({...res}))
-            navigate('/')
+            navigate('/dashboard')
         } catch (error) {
             toast.error(error.data.message || error.error);
         }

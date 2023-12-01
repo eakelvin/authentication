@@ -15,6 +15,13 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    phone: { type: Number },
+    country: { type: String },
+    // age: { type: Number },
+    gender: { type: String },
+    dateOfBirth: { type: Date},
+    picture: { type: Object },
+
 }, {timestamps: true})
 
 userSchema.pre('save', async function(next) {
