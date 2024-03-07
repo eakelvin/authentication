@@ -9,6 +9,7 @@ const { notFound, errorHandler } = require('./src/middleware/errorMiddleware')
 const userRoute = require('./src/routes/userRoute')
 
 connectDatabase()
+server.use(cors())
 server.use(express.json())
 server.use(express.urlencoded({ extended: true }))
 server.use(cookieParser())
@@ -16,7 +17,7 @@ server.use(cookieParser())
 server.use('/api/users', userRoute)
 
 
-server.get('/', (req, res) => res.send('EA Server'))
+server.get('/', (req, res) => res.send('Mern Auth Server'))
 
 server.use(notFound)
 server.use(errorHandler)
